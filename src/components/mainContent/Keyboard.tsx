@@ -1,43 +1,74 @@
-export const Keyboard = () => {
+interface KeyboardPropsType {
+  setLetterPressed: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const Keyboard = ({ setLetterPressed }: KeyboardPropsType) => {
+  const rowOneLetters = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
+  const rowTwoLetters = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
+  const rowThreeLetters = ["Z", "X", "C", "V", "B", "N", "M"];
+
+  const handleLetterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setLetterPressed(e.currentTarget.innerText);
+  };
+
+  const handleEnter = () => {
+    console.log("Enter");
+  };
+
+  const handleDelete = () => {
+    console.log("Delete");
+  };
+
+  const handleLeftArrow = () => {
+    console.log("Left");
+  };
+
+  const handleRightArrow = () => {
+    console.log("Right");
+  };
+
   return (
     <div id="keyboard-container">
       <div className="keyboard_flex-row">
-        <button>Q</button>
-        <button>W</button>
-        <button>E</button>
-        <button>R</button>
-        <button>T</button>
-        <button>Y</button>
-        <button>U</button>
-        <button>I</button>
-        <button>O</button>
-        <button>P</button>
+        {rowOneLetters.map((letter, index) => {
+          return (
+            <button key={index} onClick={handleLetterClick}>
+              {letter}
+            </button>
+          );
+        })}
       </div>
       <div className="keyboard_flex-row">
-        <button>A</button>
-        <button>S</button>
-        <button>D</button>
-        <button>F</button>
-        <button>G</button>
-        <button>H</button>
-        <button>J</button>
-        <button>K</button>
-        <button>L</button>
+        {rowTwoLetters.map((letter, index) => {
+          return (
+            <button key={index} onClick={handleLetterClick}>
+              {letter}
+            </button>
+          );
+        })}
       </div>
       <div className="keyboard_flex-row">
-        <button>Z</button>
-        <button>X</button>
-        <button>C</button>
-        <button>V</button>
-        <button>B</button>
-        <button>N</button>
-        <button>M</button>
+        {rowThreeLetters.map((letter, index) => {
+          return (
+            <button key={index} onClick={handleLetterClick}>
+              {letter}
+            </button>
+          );
+        })}
       </div>
       <div className="keyboard_flex-row">
-        <button className="action-keys">ENTER</button>
-        <button className="arrow-keys">&larr;</button>
-        <button className="arrow-keys">&rarr;</button>
-        <button className="action-keys">DELETE</button>
+        <button className="action-keys" onClick={handleEnter}>
+          ENTER
+        </button>
+        <button className="arrow-keys" onClick={handleLeftArrow}>
+          &larr;
+        </button>
+        <button className="arrow-keys" onClick={handleRightArrow}>
+          &rarr;
+        </button>
+        <button className="action-keys" onClick={handleDelete}>
+          DELETE
+        </button>
       </div>
     </div>
   );
