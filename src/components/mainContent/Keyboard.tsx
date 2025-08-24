@@ -1,12 +1,8 @@
 interface KeyboardPropsType {
   setLettersPressed: React.Dispatch<React.SetStateAction<string>>;
-  setButtonPressed: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const Keyboard = ({
-  setLettersPressed,
-  setButtonPressed,
-}: KeyboardPropsType) => {
+export const Keyboard = ({ setLettersPressed }: KeyboardPropsType) => {
   const rowOneLetters = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const rowTwoLetters = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const rowThreeLetters = ["Z", "X", "C", "V", "B", "N", "M"];
@@ -26,7 +22,11 @@ export const Keyboard = ({
   };
 
   const handleDeleteClick = () => {
-    setButtonPressed("Delete");
+    setLettersPressed((currentValue) => {
+      const indexToIgnore = currentValue.length - 1;
+      const newValue = currentValue.slice(0, indexToIgnore);
+      return newValue;
+    });
   };
 
   const handleLeftArrowClick = () => {
