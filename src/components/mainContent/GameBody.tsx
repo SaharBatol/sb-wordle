@@ -3,12 +3,16 @@ import { GuessList } from "./guessContent/GuessList";
 import { Keyboard } from "./Keyboard";
 
 export const GameBody = () => {
-  const [letterPressed, setLetterPressed] = useState("");
+  const [lettersPressed, setLettersPressed] = useState<string>("");
+  const [buttonPressed, setButtonPressed] = useState("");
 
   return (
     <div>
-      <GuessList letterPressed={letterPressed} />
-      <Keyboard setLetterPressed={setLetterPressed} />
+      <GuessList lettersPressed={lettersPressed} />
+      <Keyboard
+        setLettersPressed={setLettersPressed}
+        setButtonPressed={setButtonPressed}
+      />
     </div>
   );
 };

@@ -1,29 +1,39 @@
 interface KeyboardPropsType {
-  setLetterPressed: React.Dispatch<React.SetStateAction<string>>;
+  setLettersPressed: React.Dispatch<React.SetStateAction<string>>;
+  setButtonPressed: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const Keyboard = ({ setLetterPressed }: KeyboardPropsType) => {
+export const Keyboard = ({
+  setLettersPressed,
+  setButtonPressed,
+}: KeyboardPropsType) => {
   const rowOneLetters = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const rowTwoLetters = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const rowThreeLetters = ["Z", "X", "C", "V", "B", "N", "M"];
 
-  const handleLetterClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setLetterPressed(e.currentTarget.innerText);
+  const handleLetterClick = (letter: string) => {
+    setLettersPressed((currentValue) => {
+      if (currentValue.length < 5) {
+        return currentValue + letter;
+      }
+
+      return currentValue;
+    });
   };
 
-  const handleEnter = () => {
+  const handleEnterClick = () => {
     console.log("Enter");
   };
 
-  const handleDelete = () => {
-    console.log("Delete");
+  const handleDeleteClick = () => {
+    setButtonPressed("Delete");
   };
 
-  const handleLeftArrow = () => {
+  const handleLeftArrowClick = () => {
     console.log("Left");
   };
 
-  const handleRightArrow = () => {
+  const handleRightArrowClick = () => {
     console.log("Right");
   };
 
@@ -32,7 +42,12 @@ export const Keyboard = ({ setLetterPressed }: KeyboardPropsType) => {
       <div className="keyboard_flex-row">
         {rowOneLetters.map((letter, index) => {
           return (
-            <button key={index} onClick={handleLetterClick}>
+            <button
+              key={index}
+              onClick={() => {
+                handleLetterClick(letter);
+              }}
+            >
               {letter}
             </button>
           );
@@ -41,7 +56,12 @@ export const Keyboard = ({ setLetterPressed }: KeyboardPropsType) => {
       <div className="keyboard_flex-row">
         {rowTwoLetters.map((letter, index) => {
           return (
-            <button key={index} onClick={handleLetterClick}>
+            <button
+              key={index}
+              onClick={() => {
+                handleLetterClick(letter);
+              }}
+            >
               {letter}
             </button>
           );
@@ -50,23 +70,28 @@ export const Keyboard = ({ setLetterPressed }: KeyboardPropsType) => {
       <div className="keyboard_flex-row">
         {rowThreeLetters.map((letter, index) => {
           return (
-            <button key={index} onClick={handleLetterClick}>
+            <button
+              key={index}
+              onClick={() => {
+                handleLetterClick(letter);
+              }}
+            >
               {letter}
             </button>
           );
         })}
       </div>
       <div className="keyboard_flex-row">
-        <button className="action-keys" onClick={handleEnter}>
+        <button className="action-keys" onClick={handleEnterClick}>
           ENTER
         </button>
-        <button className="arrow-keys" onClick={handleLeftArrow}>
+        <button className="arrow-keys" onClick={handleLeftArrowClick}>
           &larr;
         </button>
-        <button className="arrow-keys" onClick={handleRightArrow}>
+        <button className="arrow-keys" onClick={handleRightArrowClick}>
           &rarr;
         </button>
-        <button className="action-keys" onClick={handleDelete}>
+        <button className="action-keys" onClick={handleDeleteClick}>
           DELETE
         </button>
       </div>

@@ -1,29 +1,15 @@
-import { useEffect, useState } from "react";
-
 interface GuessPropsType {
-  letterPressed: string;
+  lettersPressed: string;
 }
 
-export const Guess = ({ letterPressed }: GuessPropsType) => {
-  const [currentPosition, setCurrentPosition] = useState(0);
-  const [letters, setLetters] = useState<string[]>(["", "", "", "", ""]);
+export const Guess = ({ lettersPressed }: GuessPropsType) => {
+  const letters = ["", "", "", "", ""];
 
-  useEffect(() => {
-    if (letterPressed !== "") {
-      for (let i: number = 0; i < 5; i++) {
-        if (i === currentPosition) {
-          setLetters((currentValue) => {
-            currentValue[currentPosition] = letterPressed;
-            return currentValue;
-          });
+  for (let i = 0; i < letters.length; i++) {
+    const splitLettersPressed = lettersPressed.split("");
 
-          setCurrentPosition((currentValue) => {
-            return ++currentValue;
-          });
-        }
-      }
-    }
-  }, [letterPressed]);
+    letters[i] = splitLettersPressed[i];
+  }
 
   return (
     <div className="guess-box-container">
