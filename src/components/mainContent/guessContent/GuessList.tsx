@@ -12,9 +12,11 @@ export const GuessList = ({ lettersPressed }: GuessListPropsType) => {
 
   for (let i: number = 0; i < numOfGuesses; i++) {
     if (i === currentRow) {
-      guesses.push(<Guess key={i} lettersPressed={lettersPressed} />);
+      guesses.push(
+        <Guess key={i} lettersPressed={lettersPressed} isCurrentGuess={true} />
+      );
     } else {
-      guesses.push(<Guess key={i} lettersPressed="" />);
+      guesses.push(<Guess key={i} lettersPressed="" isCurrentGuess={false} />);
     }
   }
 

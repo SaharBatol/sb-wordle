@@ -24,6 +24,10 @@
   border-radius: 5px;
 }
 
+.selected-box {
+  background-color: aquamarine;
+}
+
 #keyboard-container {
   display: flex;
   flex-direction: column;
