@@ -1,8 +1,14 @@
 interface KeyboardPropsType {
   setLettersPressed: React.Dispatch<React.SetStateAction<string>>;
+  setDirectionalOffset: React.Dispatch<React.SetStateAction<number>>;
+  lettersPressed: string;
 }
 
-export const Keyboard = ({ setLettersPressed }: KeyboardPropsType) => {
+export const Keyboard = ({
+  setLettersPressed,
+  setDirectionalOffset,
+  lettersPressed,
+}: KeyboardPropsType) => {
   const rowOneLetters = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const rowTwoLetters = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const rowThreeLetters = ["Z", "X", "C", "V", "B", "N", "M"];
@@ -23,6 +29,14 @@ export const Keyboard = ({ setLettersPressed }: KeyboardPropsType) => {
 
   const handleDeleteClick = () => {
     setLettersPressed((currentValue) => {
+      // the character you are on should be replaced with an empty string when you press delete -- High level overview
+
+      // do offset -4 to get index of current character (-4 hard coded) :D
+      // get the current character we are on using the index from above
+      // replace current character with empty string
+
+      // no other characters should change
+
       const indexToIgnore = currentValue.length - 1;
       const newValue = currentValue.slice(0, indexToIgnore);
       return newValue;
@@ -30,11 +44,25 @@ export const Keyboard = ({ setLettersPressed }: KeyboardPropsType) => {
   };
 
   const handleLeftArrowClick = () => {
-    console.log("Left");
+    setDirectionalOffset((currentValue) => {
+      let lettersLength = lettersPressed.length;
+      const maximumOffset = 0 - (lettersLength - 1);
+
+      if (currentValue > maximumOffset) {
+        return --currentValue;
+      }
+      return currentValue;
+    });
   };
 
   const handleRightArrowClick = () => {
-    console.log("Right");
+    setDirectionalOffset((currentValue) => {
+      let lettersLength = lettersPressed.length;
+      if (currentValue < 5 - lettersLength) {
+        return ++currentValue;
+      }
+      return currentValue;
+    });
   };
 
   return (

@@ -4,11 +4,19 @@ import { Keyboard } from "./Keyboard";
 
 export const GameBody = () => {
   const [lettersPressed, setLettersPressed] = useState<string>("");
-
+  const [directionalOffset, setDirectionalOffset] = useState<number>(0);
+  console.log(directionalOffset);
   return (
     <div>
-      <GuessList lettersPressed={lettersPressed} />
-      <Keyboard setLettersPressed={setLettersPressed} />
+      <GuessList
+        lettersPressed={lettersPressed}
+        directionalOffset={directionalOffset}
+      />
+      <Keyboard
+        lettersPressed={lettersPressed}
+        setLettersPressed={setLettersPressed}
+        setDirectionalOffset={setDirectionalOffset}
+      />
     </div>
   );
 };

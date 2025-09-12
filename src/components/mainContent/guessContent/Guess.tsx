@@ -1,9 +1,14 @@
 interface GuessPropsType {
   lettersPressed: string;
   isCurrentGuess: boolean;
+  directionalOffset: number;
 }
 
-export const Guess = ({ lettersPressed, isCurrentGuess }: GuessPropsType) => {
+export const Guess = ({
+  lettersPressed,
+  isCurrentGuess,
+  directionalOffset,
+}: GuessPropsType) => {
   const letters = ["", "", "", "", ""];
   let currentInputIndex = 0;
 
@@ -14,7 +19,10 @@ export const Guess = ({ lettersPressed, isCurrentGuess }: GuessPropsType) => {
       letters[i] = splitLettersPressed[i];
     }
 
-    if (letters[i] === "" && letters[i - 1] !== "") {
+    const isCurrElemNotEmpty = letters[i] !== "";
+    const isNextElemEmpty = letters[i + 1] === "";
+
+    if (isCurrElemNotEmpty && isNextElemEmpty) {
       currentInputIndex = i;
     }
   }
@@ -30,7 +38,12 @@ export const Guess = ({ lettersPressed, isCurrentGuess }: GuessPropsType) => {
       {letters.map((letter, i) => {
         let boxStyling = "guess-box ";
 
-        if (currentInputIndex === i && isCurrentGuess) {
+        const updatedHighlightedPosition =
+          currentInputIndex + directionalOffset;
+
+        const isCurrentInputPosition = updatedHighlightedPosition === i;
+
+        if (isCurrentInputPosition && isCurrentGuess) {
           boxStyling += "selected-box";
         }
 
