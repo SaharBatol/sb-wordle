@@ -15,6 +15,7 @@ export const GameBody = () => {
       <Keyboard
         lettersPressed={lettersPressed}
         setLettersPressed={setLettersPressed}
+        directionalOffset={directionalOffset}
         setDirectionalOffset={setDirectionalOffset}
       />
     </div>

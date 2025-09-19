@@ -2,21 +2,48 @@ interface KeyboardPropsType {
   setLettersPressed: React.Dispatch<React.SetStateAction<string>>;
   setDirectionalOffset: React.Dispatch<React.SetStateAction<number>>;
   lettersPressed: string;
+  directionalOffset: number;
 }
 
 export const Keyboard = ({
   setLettersPressed,
   setDirectionalOffset,
   lettersPressed,
+  directionalOffset,
 }: KeyboardPropsType) => {
   const rowOneLetters = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const rowTwoLetters = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const rowThreeLetters = ["Z", "X", "C", "V", "B", "N", "M"];
 
-  const handleLetterClick = (letter: string) => {
+  const handleLetterClick = (pressedLetter: string) => {
     setLettersPressed((currentValue) => {
-      if (currentValue.length < 5) {
-        return currentValue + letter;
+      if (directionalOffset > 0) {
+        const isEmpty = currentValue.length === 0;
+
+        const highlightedPosition = isEmpty
+          ? directionalOffset + 1
+          : directionalOffset;
+
+        for (let count = 1; count < highlightedPosition; count++) {
+          currentValue += " ";
+        }
+
+        setDirectionalOffset(0);
+        return currentValue + pressedLetter;
+      } else if (directionalOffset < 0 || currentValue.length === 5) {
+        let updatedWord = "";
+        const highlightedIndex = directionalOffset + (currentValue.length - 1);
+
+        for (let i = 0; i < currentValue.length; i++) {
+          if (i === highlightedIndex) {
+            updatedWord += pressedLetter;
+          } else {
+            updatedWord += currentValue[i];
+          }
+        }
+        return updatedWord;
+      } else if (currentValue.length < 5) {
+        return currentValue + pressedLetter;
       }
 
       return currentValue;
@@ -29,17 +56,12 @@ export const Keyboard = ({
 
   const handleDeleteClick = () => {
     setLettersPressed((currentValue) => {
-      // the character you are on should be replaced with an empty string when you press delete -- High level overview
+      const indexOfCurrChar = lettersPressed.length - 1;
 
-      // do offset -4 to get index of current character (-4 hard coded) :D
-      // get the current character we are on using the index from above
-      // replace current character with empty string
+      const updatedValue = currentValue.split("");
 
-      // no other characters should change
-
-      const indexToIgnore = currentValue.length - 1;
-      const newValue = currentValue.slice(0, indexToIgnore);
-      return newValue;
+      updatedValue[indexOfCurrChar] = " ";
+      return updatedValue.join("");
     });
   };
 
