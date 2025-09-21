@@ -1,9 +1,18 @@
+import type React from "react";
+import { generateColourCodedChars, validateGuess } from "../../utils/util";
+import validWords from "../../utils/wordsList";
+import toast from "react-hot-toast";
+
 interface KeyboardPropsType {
   setLettersPressed: (callbackFunc: (currentValue: string) => string) => void;
   setDirectionalOffset: React.Dispatch<React.SetStateAction<number>>;
   lettersPressed: string;
   directionalOffset: number;
   setCurrentRow: React.Dispatch<React.SetStateAction<number>>;
+  incorrectGuessedLetters: Array<string>;
+  gameResult: string;
+  setGameResult: React.Dispatch<React.SetStateAction<string>>;
+  wordToGuess: string;
 }
 
 export const Keyboard = ({
@@ -12,6 +21,10 @@ export const Keyboard = ({
   lettersPressed,
   directionalOffset,
   setCurrentRow,
+  incorrectGuessedLetters,
+  gameResult,
+  setGameResult,
+  wordToGuess,
 }: KeyboardPropsType) => {
   const rowOneLetters = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const rowTwoLetters = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
@@ -53,8 +66,33 @@ export const Keyboard = ({
   };
 
   const handleEnterClick = () => {
+    const isInvalidWord =
+      validWords.includes(lettersPressed.toLowerCase()) === false;
+
+    if (isInvalidWord) {
+      toast("That is not a valid word!");
+      return;
+    }
+
     setCurrentRow((currentValue) => {
-      return ++currentValue;
+      if (currentValue < 6) {
+        currentValue++;
+
+        if (currentValue === 6) {
+          const colourCodedGuessChars = generateColourCodedChars(
+            wordToGuess,
+            lettersPressed
+          );
+
+          const gameResult = validateGuess(colourCodedGuessChars);
+
+          setGameResult(gameResult);
+        }
+
+        return currentValue;
+      }
+
+      return currentValue;
     });
   };
 
@@ -95,65 +133,74 @@ export const Keyboard = ({
     });
   };
 
+  const renderKeyboardChars = (
+    letter: string,
+    index: number
+  ): React.JSX.Element => {
+    const isIncorrectLetter = incorrectGuessedLetters.includes(letter);
+
+    return (
+      <button
+        disabled={gameResult !== ""}
+        className={
+          "keyboard-button-colour" + (isIncorrectLetter ? " grey" : "")
+        }
+        key={index}
+        onClick={() => {
+          handleLetterClick(letter);
+        }}
+      >
+        {letter}
+      </button>
+    );
+  };
+
+  let canSubmit = lettersPressed.length === 5;
+
+  if (lettersPressed.includes(" ")) {
+    canSubmit = false;
+  }
+
   return (
     <div id="keyboard-container">
       <div className="keyboard_flex-row">
-        {rowOneLetters.map((letter, index) => {
-          return (
-            <button
-              key={index}
-              onClick={() => {
-                handleLetterClick(letter);
-              }}
-            >
-              {letter}
-            </button>
-          );
-        })}
+        {rowOneLetters.map(renderKeyboardChars)}
       </div>
       <div className="keyboard_flex-row">
-        {rowTwoLetters.map((letter, index) => {
-          return (
-            <button
-              key={index}
-              onClick={() => {
-                handleLetterClick(letter);
-              }}
-            >
-              {letter}
-            </button>
-          );
-        })}
+        {rowTwoLetters.map(renderKeyboardChars)}
       </div>
       <div className="keyboard_flex-row">
-        {rowThreeLetters.map((letter, index) => {
-          return (
-            <button
-              key={index}
-              onClick={() => {
-                handleLetterClick(letter);
-              }}
-            >
-              {letter}
-            </button>
-          );
-        })}
+        {rowThreeLetters.map(renderKeyboardChars)}
       </div>
       <div className="keyboard_flex-row">
         <button
-          disabled={lettersPressed.length !== 5}
-          className="action-keys"
+          disabled={canSubmit === false || gameResult !== ""}
+          className={
+            "action-keys" + (canSubmit ? " keyboard-button-colour" : " grey")
+          }
           onClick={handleEnterClick}
         >
           ENTER
         </button>
-        <button className="arrow-keys" onClick={handleLeftArrowClick}>
+        <button
+          disabled={gameResult !== ""}
+          className="arrow-keys keyboard-button-colour"
+          onClick={handleLeftArrowClick}
+        >
           &larr;
         </button>
-        <button className="arrow-keys" onClick={handleRightArrowClick}>
+        <button
+          disabled={gameResult !== ""}
+          className="arrow-keys keyboard-button-colour"
+          onClick={handleRightArrowClick}
+        >
           &rarr;
         </button>
-        <button className="action-keys" onClick={handleDeleteClick}>
+        <button
+          disabled={gameResult !== ""}
+          className="action-keys keyboard-button-colour"
+          onClick={handleDeleteClick}
+        >
           DELETE
         </button>
       </div>

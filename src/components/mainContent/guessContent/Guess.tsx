@@ -1,8 +1,12 @@
+import { useEffect } from "react";
+import { validateGuess } from "../../../utils/util";
+
 interface GuessPropsType {
   lettersPressed: string;
   isCurrentGuess: boolean;
   directionalOffset: number;
   colourCodedGuessChars: Array<string>;
+  setGameResult: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const Guess = ({
@@ -10,9 +14,22 @@ export const Guess = ({
   isCurrentGuess,
   directionalOffset,
   colourCodedGuessChars,
+  setGameResult,
 }: GuessPropsType) => {
   const letters = ["", "", "", "", ""];
   let currentInputIndex = 0;
+
+  useEffect(() => {
+    setGameResult((currentValue) => {
+      const gameResult = validateGuess(colourCodedGuessChars);
+
+      if (gameResult === "winner" && currentValue === "") {
+        return "winner";
+      }
+
+      return currentValue;
+    });
+  }, [colourCodedGuessChars]);
 
   for (let i = 0; i < letters.length; i++) {
     const splitLettersPressed = lettersPressed.split("");

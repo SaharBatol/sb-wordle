@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Guess } from "./Guess";
+import { generateColourCodedChars } from "../../../utils/util";
 
 interface GuessListPropsType {
   lettersPressed: Array<string>;
   directionalOffset: number;
   currentRow: number;
   wordToGuess: string;
+  setGameResult: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const GuessList = ({
@@ -13,6 +15,7 @@ export const GuessList = ({
   directionalOffset,
   currentRow,
   wordToGuess,
+  setGameResult,
 }: GuessListPropsType) => {
   const guesses = [];
 
@@ -20,6 +23,7 @@ export const GuessList = ({
     if (i === currentRow) {
       guesses.push(
         <Guess
+          setGameResult={setGameResult}
           colourCodedGuessChars={[]}
           key={i}
           lettersPressed={lettersPressed[currentRow]}
@@ -28,29 +32,15 @@ export const GuessList = ({
         />
       );
     } else {
-      const currWord = lettersPressed[i];
-      const colourCodedGuessChars = [];
-
-      if (currWord.length === 5) {
-        for (let j = 0; j < currWord.length; j++) {
-          colourCodedGuessChars.push("grey");
-
-          for (let k = 0; k < wordToGuess.length; k++) {
-            if (currWord[j].toUpperCase() === wordToGuess[k].toUpperCase()) {
-              if (j === k) {
-                colourCodedGuessChars[j] = "green";
-              } else {
-                colourCodedGuessChars[j] = "orange";
-              }
-
-              break;
-            }
-          }
-        }
-      }
+      const currentWord = lettersPressed[i];
+      const colourCodedGuessChars = generateColourCodedChars(
+        wordToGuess,
+        currentWord
+      );
 
       guesses.push(
         <Guess
+          setGameResult={setGameResult}
           colourCodedGuessChars={colourCodedGuessChars}
           key={i}
           lettersPressed={lettersPressed[i]}
