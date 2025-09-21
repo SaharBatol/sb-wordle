@@ -56,11 +56,15 @@ export const Keyboard = ({
 
   const handleDeleteClick = () => {
     setLettersPressed((currentValue) => {
-      const indexOfCurrChar = lettersPressed.length - 1;
-
+      const lastIndex = currentValue.length - 1;
       const updatedValue = currentValue.split("");
 
-      updatedValue[indexOfCurrChar] = " ";
+      if (directionalOffset === 0) {
+        updatedValue[lastIndex] = "";
+      } else {
+        const highlightedIndex = directionalOffset + lastIndex;
+        updatedValue[highlightedIndex] = " ";
+      }
       return updatedValue.join("");
     });
   };
