@@ -2,12 +2,14 @@ interface GuessPropsType {
   lettersPressed: string;
   isCurrentGuess: boolean;
   directionalOffset: number;
+  colourCodedGuessChars: Array<string>;
 }
 
 export const Guess = ({
   lettersPressed,
   isCurrentGuess,
   directionalOffset,
+  colourCodedGuessChars,
 }: GuessPropsType) => {
   const letters = ["", "", "", "", ""];
   let currentInputIndex = 0;
@@ -36,7 +38,11 @@ export const Guess = ({
   return (
     <div className="guess-box-container">
       {letters.map((letter, i) => {
-        let boxStyling = "guess-box ";
+        let boxStylingClass = "guess-box ";
+
+        if (colourCodedGuessChars.length === 5) {
+          boxStylingClass += colourCodedGuessChars[i];
+        }
 
         const updatedHighlightedPosition =
           currentInputIndex + directionalOffset;
@@ -44,11 +50,11 @@ export const Guess = ({
         const isCurrentInputPosition = updatedHighlightedPosition === i;
 
         if (isCurrentInputPosition && isCurrentGuess) {
-          boxStyling += "selected-box";
+          boxStylingClass += "selected-box";
         }
 
         return (
-          <div key={i} className={boxStyling}>
+          <div key={i} className={boxStylingClass}>
             {letter}
           </div>
         );

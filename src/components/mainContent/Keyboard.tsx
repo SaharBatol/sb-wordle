@@ -1,8 +1,9 @@
 interface KeyboardPropsType {
-  setLettersPressed: React.Dispatch<React.SetStateAction<string>>;
+  setLettersPressed: (callbackFunc: (currentValue: string) => string) => void;
   setDirectionalOffset: React.Dispatch<React.SetStateAction<number>>;
   lettersPressed: string;
   directionalOffset: number;
+  setCurrentRow: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const Keyboard = ({
@@ -10,6 +11,7 @@ export const Keyboard = ({
   setDirectionalOffset,
   lettersPressed,
   directionalOffset,
+  setCurrentRow,
 }: KeyboardPropsType) => {
   const rowOneLetters = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const rowTwoLetters = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
@@ -51,7 +53,9 @@ export const Keyboard = ({
   };
 
   const handleEnterClick = () => {
-    console.log("Enter");
+    setCurrentRow((currentValue) => {
+      return ++currentValue;
+    });
   };
 
   const handleDeleteClick = () => {
@@ -136,7 +140,11 @@ export const Keyboard = ({
         })}
       </div>
       <div className="keyboard_flex-row">
-        <button className="action-keys" onClick={handleEnterClick}>
+        <button
+          disabled={lettersPressed.length !== 5}
+          className="action-keys"
+          onClick={handleEnterClick}
+        >
           ENTER
         </button>
         <button className="arrow-keys" onClick={handleLeftArrowClick}>
