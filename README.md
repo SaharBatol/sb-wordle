@@ -8,4 +8,5 @@
 
 A simple recreation of the game "Wordle" with an extra twist and new features.
 
+https://sbwordle.netlify.app/
 
