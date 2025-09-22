@@ -70,7 +70,12 @@ export const Keyboard = ({
       validWords.includes(lettersPressed.toLowerCase()) === false;
 
     if (isInvalidWord) {
-      toast("That is not a valid word!");
+      toast("That is not a valid word!", {
+        style: {
+          color: "red",
+          border: "1px solid red",
+        },
+      });
       return;
     }
 

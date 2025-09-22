@@ -13,8 +13,10 @@ const Popup = ({
     <div id="popup-container">
       <div id="popup-box">
         <h2>{message}</h2>
-        <button onClick={handlePlayAgain}>Play Again?</button>
-        <button onClick={handlePopupClose}>Close</button>
+        <div className="button-container">
+          <button onClick={handlePlayAgain}>Play Again?</button>
+          <button onClick={handlePopupClose}>Close</button>
+        </div>
       </div>
     </div>
   );
