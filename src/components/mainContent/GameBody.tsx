@@ -3,7 +3,7 @@ import { GuessList } from "./guessContent/GuessList";
 import { Keyboard } from "./Keyboard";
 import Popup from "./Popup";
 import wordsToGuess from "../../utils/wordsToGuess";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const lettersPressedDefaultVal = ["", "", "", "", "", ""];
 

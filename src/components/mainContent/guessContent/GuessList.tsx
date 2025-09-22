@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Guess } from "./Guess";
 import { generateColourCodedChars } from "../../../utils/util";
 
